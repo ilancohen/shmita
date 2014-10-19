@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shmita app prototype</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script> // http://jqueryui.com/tabs/#vertical
+$(function() {
+$( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+});
+</script>
+<style>
+.ui-tabs-vertical { width: 55em; }
+.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
+.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+</style>
+</head>
+<body>
+<div id="tabs">
+<ul>
+<li><a href="#kedusha">Kedushat shviit</a></li>
+<li><a href="#noKedusha">No kedushat shviit</a></li>
+<li><a href="#sefihin">Sefihin</a></li>
+<li><a href="#noSefihin">No sefihin</a></li>
+<li><a href="#biur">Needs biur</a></li>
+</ul>
+<div id="kedusha">
+<h2>Kedushat shviit</h2>
+<p id="kedushaList"></p>
+</div>
+<div id="noKedusha">
+<h2>No kedushat shviit</h2>
+<p id="noKedushaList"></p>
+</div>
+<div id="sefihin">
+<h2>Sefihin</h2>
+<p id="sefihinList"></p>
+</div>
+<div id="noSefihin">
+<h2>No sefihin</h2>
+<p id="noSefihinList"></p>
+</div>
+<div id="biur">
+<h2>Needs biur</h2>
+<p id="biurList"></p>
+</div>
+</div>
+<p id="demo"></p>
+
+<script>
+
+function makeDate(year, month, day) {
+	return new Date(year, month-1, day); // -1 because January=0, February=1 in Javascript
+}
+
+// Food data - can be easily updated w/o knowing programming.
+// I use meats so that my fake data won't eventually get mixed with real data
+// Real data: http://www.toraland.org.il/%D7%91%D7%99%D7%AA-%D7%94%D7%9E%D7%93%D7%A8%D7%A9/%D7%A9%D7%A0%D7%AA-%D7%A9%D7%9E%D7%99%D7%98%D7%94-%D7%AA%D7%A9%D7%A2%D7%94/%D7%9C%D7%95%D7%97-%D7%A7%D7%93%D7%95%D7%A9%D7%AA-%D7%A9%D7%91%D7%99%D7%A2%D7%99%D7%AA-%D7%95%D7%91%D7%99%D7%A2%D7%95%D7%A8-%D7%91%D7%A4%D7%99%D7%A8%D7%95%D7%AA-%D7%94%D7%90%D7%99%D7%9C%D7%9F.aspx
+
+var foods=[];
+
+var chicken = {
+	nameEn: "chicken",
+	nameHe: "עוף",
+	beginKedusha: makeDate(2014,5,24),
+	endKedusha: makeDate(2014,10,24),
+	beginSefihin: makeDate(2014,5,24),
+	endSefihin: makeDate(2014,9,24),
+	biur: makeDate(2014,11,24),
+	info: "Everything tastes like chicken"
+};
+foods.push(chicken);
+
+var beef = {
+	nameEn: "beef",
+	nameHe: "בקר",
+	beginKedusha: makeDate(2014,5,24),
+	endKedusha: makeDate(2014,5,24),
+	beginSefihin: makeDate(2014,5,24),
+	endSefihin: makeDate(2014,5,24),
+	biur: makeDate(2014,5,24),
+	info: "Yum yum yum"
+};
+foods.push(beef);
+
+// Functions
+
+var now = new Date();
+
+function kedusha(food) {
+	if (food.beginKedusha < now && food.endKedusha > now) return true;
+	else return false;
+}
+
+function sefihin(food) {
+	if (food.beginSefihin < now && food.endSefihin > now) return true;
+	else return false;
+}
+
+function needsBiur(food) {
+	if (food.biur < now) return true;
+	else return false;
+}
+
+// Construct page for today
+
+var kedushaList="";
+for (var i = 0; i < foods.length; i++) {
+	if (kedusha(foods[i])) kedushaList=kedushaList+foods[i].nameEn+", ";
+}
+document.getElementById("kedushaList").innerHTML = kedushaList;
+
+var noKedushaList="";
+for (var i = 0; i < foods.length; i++) {
+	if (!kedusha(foods[i])) noKedushaList=noKedushaList+foods[i].nameEn+", ";
+}
+document.getElementById("noKedushaList").innerHTML = noKedushaList;
+
+var sefihinList="";
+for (var i = 0; i < foods.length; i++) {
+	if (sefihin(foods[i])) sefihinList=sefihinList+foods[i].nameEn+", ";
+}
+document.getElementById("sefihinList").innerHTML = sefihinList;
+
+var noSefihinList="";
+for (var i = 0; i < foods.length; i++) {
+	if (!sefihin(foods[i])) noSefihinList=noSefihinList+foods[i].nameEn+", ";
+}
+document.getElementById("noSefihinList").innerHTML = noSefihinList;
+
+var biurList="";
+for (var i = 0; i < foods.length; i++) {
+	if (needsBiur(foods[i])) biurList=biurList+foods[i].nameEn+", ";
+}
+document.getElementById("biurList").innerHTML = biurList;
+
+document.write("Current date: "+new Date());
+
+</script>
+</body>
+</html>
