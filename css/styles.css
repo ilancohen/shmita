@@ -24,6 +24,7 @@ nav .nav {
 	box-shadow: 10px 0 10px rgba(0,0,0,0.2);
 	height: 100%;
 	width: 50%;
+	background-color: white;
 }
 .menu-open nav {
 	left: 0;
