@@ -11,12 +11,14 @@
 		<header>
 			<a class="nav-menu-button" href="#" ng-click="toggleMenu()">&#9776;</a>
 		</header>
-		<nav nav-click>
-			<ul class="nav nav-pills nav-stacked">
-				<li ng-repeat="navItem in nav"><a href="#/{{navItem.route}}">{{navItem.name}}</a></li>
-			</ul>
-		</nav>
-		<ng-view></ng-view>
+		<section class="main">
+			<nav nav-click>
+				<ul class="nav nav-pills nav-stacked">
+					<li ng-repeat="navItem in nav"><a href="#/{{navItem.route}}">{{navItem.name}}</a></li>
+				</ul>
+			</nav>
+			<ng-view></ng-view>
+		</section>
 	</body>
 	<script src="js/script.js" type="text/javascript"></script>
 </html>
