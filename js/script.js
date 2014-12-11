@@ -1,21 +1,4 @@
-var app = angular.module('app', []);
-app.config(function($routeProvider) {
-	$routeProvider
-		.when('/', {
-			templateUrl : 'pages/home.html'
-		})
-		.when('/species', {
-			templateUrl : 'pages/species.html'
-		})
-		.when('/status', {
-			templateUrl : 'pages/status.html',
-		})
-		.when('/calendar', {
-			templateUrl : 'pages/calendar.html',
-		});
-	});
-
-app.directive('navClick', function() {
+Shmita.app.directive('navClick', function() {
 	return {
     	restrict: 'A',
 		link: function($scope, element, attrs) {
@@ -31,7 +14,7 @@ app.directive('navClick', function() {
 	};
 });
 
-function MainController($scope) {
+Shmita.app.controller('MainController', function($scope) {
 	$scope.nav = [
 		{
 			name: 'Home',
@@ -56,4 +39,44 @@ function MainController($scope) {
 	$scope.toggleMenu = function() {
 		$scope.menuOpen = !$scope.menuOpen;
 	}
-}
+});
+
+Shmita.app.controller('StatusController', function($scope, $routeParams, status) {
+	$scope.statusNav = [
+		{
+			name: 'Kedushat Shviit',
+			route: 'kedusha'
+		},
+		{
+			name: 'No Kedushat Shviit',
+			route: 'noKedusha'
+		},
+		{
+			name: 'Sefihin',
+			route: 'sefihin'
+		},
+		{
+			name: 'No Sefihin',
+			route: 'noSefihin'
+		},
+		{
+			name: 'Needs Biur',
+			route: 'needsBiur'
+		}
+	]
+
+	$scope.$watch($routeParams.status, switchTab);
+
+	function switchTab() {
+		$scope.statusNav.forEach(function(tab){
+			var activeTab;
+			if (tab.route === $routeParams.status) {
+				tab.active = true;
+			} else if (tab.active) {
+				tab.active = false;		
+			}
+		});
+		$scope.foodList = status.getList($routeParams.status);
+	}
+	switchTab();
+});

@@ -21,6 +21,7 @@ header {
 	font-size: 35px;
 	line-height: 35px;
 	color: #fff;
+	cursor: pointer;
 }
 .nav-menu-button:hover {
 	text-decoration: none;
@@ -37,6 +38,8 @@ nav .nav {
 	height: 100%;
 	width: 50%;
 	background-color: white;
+	position: relative;
+	z-index: 1000;
 }
 .menu-open nav {
 	left: 0;
