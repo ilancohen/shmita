@@ -17,6 +17,6 @@ Shmita.app.config(function($routeProvider) {
 			templateUrl : 'pages/calendar.html',
 		})
 		.when('/status', {
-			redirectTo : '/status/shviit',
+			redirectTo : '/status/kedusha',
 		});
 });
